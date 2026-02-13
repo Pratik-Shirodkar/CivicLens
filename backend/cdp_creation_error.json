@@ -1,0 +1,4 @@
+{
+  "message": "",
+  "stack": "ResourceExhaustedError\n    at APIError.fromError (C:\\Users\\prati\\IdeaProjects\\CivicLens\\backend\\node_modules\\@coinbase\\coinbase-sdk\\dist\\coinbase\\api_error.js:80:24)\n    at C:\\Users\\prati\\IdeaProjects\\CivicLens\\backend\\node_modules\\@coinbase\\coinbase-sdk\\dist\\coinbase\\utils.js:37:52\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Axios.request (C:\\Users\\prati\\IdeaProjects\\CivicLens\\backend\\node_modules\\axios\\dist\\node\\axios.cjs:4791:14)\n    at async Wallet.createWithSeed (C:\\Users\\prati\\IdeaProjects\\CivicLens\\backend\\node_modules\\@coinbase\\coinbase-sdk\\dist\\coinbase\\wallet.js:202:24)\n    at async C:\\Users\\prati\\IdeaProjects\\CivicLens\\backend\\test_cdp_robust.js:21:24"
+}

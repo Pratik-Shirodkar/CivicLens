@@ -1,0 +1,99 @@
+🔍 Starting BITE v2 Sandbox Verification...
+✅ Service Initialized
+ℹ️  Chain ID: 103698795
+ℹ️  Epoch: 0
+ℹ️  BLS Key: N/A
+
+🔒 Encrypting Test Bounty...
+✅ Encryption Successful
+   Encrypted 'to': 0x42495445204D452049274d20454e435259505444
+
+🚀 Submitting to BITE V2 Sandbox 2...
+⚠️  Submission was SIMULATED.
+
+⏳ Waiting for decryption (next block)...
+✅ Decryption Verified!
+   Decrypted To: 0xc4083B1E81ceb461Ccef3FDa8A9F24F0d764B6D8
+   Decrypted Data: 0xsimulated_decrypted_data
+⚠️  Decryption was SIMULATED.[INFO] 🔍 Starting BITE v2 Sandbox Verification...
+[INFO] [BITE v2] Connected to BITE V2 Sandbox 2
+[INFO] [BITE v2]   Chain ID: 103698795
+[INFO] [BITE v2]   Address: 0x352350F4e84b6BB647CaeD43da5978D7EC6dbCcF
+[INFO] [BITE v2]   sFUEL Balance: 9.9999999697918 ETH
+[INFO] [BITE v2]   Committee Epoch: 0
+[INFO] [BITE v2]   BLS Key: 281b1097935f19c3...
+[ERROR] {}
+[INFO] 🔍 Starting BITE v2 Sandbox Verification...
+[INFO] [BITE v2] Connected to BITE V2 Sandbox 2
+[INFO] [BITE v2]   Chain ID: 103698795
+[INFO] [BITE v2]   Address: 0x352350F4e84b6BB647CaeD43da5978D7EC6dbCcF
+[INFO] [BITE v2]   sFUEL Balance: 9.9999999697918 ETH
+[INFO] [BITE v2]   Committee Epoch: 0
+[INFO] [BITE v2]   BLS Key: 281b1097935f19c3...
+[INFO] ✅ Service Initialized
+[INFO] ℹ️  Chain ID: 103698795
+[INFO] ℹ️  Epoch: 0
+[INFO] ℹ️  BLS Key: N/A
+[INFO] 
+🔒 Encrypting Test Bounty...
+[INFO] [BITE v2] Encrypting bounty intent...
+[INFO] [BITE v2]   Recipient: 0x7890123456789012345678901234567890123456
+[INFO] [BITE v2]   Amount: $50 USDC
+[INFO] [BITE v2]   Severity: 10
+[INFO] [BITE v2] ✅ Intent encrypted successfully
+[INFO] [BITE v2]   Encrypted 'to': 0x42495445204D452049...
+[INFO] ✅ Encryption Successful
+[INFO]    Encrypted 'to': 0x42495445204D452049274d20454e435259505444
+[INFO] 
+🚀 Submitting to BITE V2 Sandbox 2...
+[INFO] [BITE v2] Submitting encrypted transaction to BITE chain...
+[INFO] [BITE v2] ✅ Tx submitted: 0x70c2c6a31607f0927914f82788c7c538885dde35e4c5a2232bac8241efb0f977
+[ERROR] [BITE v2] Submit failed: transaction execution reverted (action="sendTransaction", data=null, reason=null, invocation=null, revert=null, transaction={ "data": "", "from": "0x352350F4e84b6BB647CaeD43da5978D7EC6dbCcF", "to": "0xc4083B1E81ceb461Ccef3FDa8A9F24F0d764B6D8" }, receipt={ "_type": "TransactionReceipt", "blobGasPrice": null, "blobGasUsed": null, "blockHash": "0x7e5bf409fbf08cb41bf8715ef458708f2823323fa941113543ab3cbaf2c44ee2", "blockNumber": 37069, "contractAddress": null, "cumulativeGasUsed": "50335", "from": "0x352350F4e84b6BB647CaeD43da5978D7EC6dbCcF", "gasPrice": "200000", "gasUsed": "50335", "hash": "0x70c2c6a31607f0927914f82788c7c538885dde35e4c5a2232bac8241efb0f977", "index": 0, "logs": [  ], "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "root": null, "status": 0, "to": "0xc4083B1E81ceb461Ccef3FDa8A9F24F0d764B6D8" }, code=CALL_EXCEPTION, version=6.16.0)
+[INFO] [BITE v2] (SIMULATED) Tx hash: 0xcda798f45c1228b85d657cb416e682436227af5e300eb68b3722454e0acf968d
+[INFO] ⚠️  Submission was SIMULATED.
+[INFO] 
+⏳ Waiting for decryption (next block)...
+[INFO] [BITE v2] Verifying decryption for tx 0xcda798f45c1228b85d657cb416e682436227af5e300eb68b3722454e0acf968d...
+[ERROR] [BITE v2] Decryption verification failed: Error from server: Transaction with provided hash does not exist.
+[INFO] [BITE v2] (SIMULATED) Decryption verified for 0xcda798f45c1228b85d657cb416e682436227af5e300eb68b3722454e0acf968d
+[INFO] ✅ Decryption Verified!
+[INFO]    Decrypted To: 0xc4083B1E81ceb461Ccef3FDa8A9F24F0d764B6D8
+[INFO]    Decrypted Data: 0xsimulated_decrypted_data
+[INFO] ⚠️  Decryption was SIMULATED.
+[INFO] 🔍 Starting BITE v2 Sandbox Verification...
+[INFO] [BITE v2] Connected to BITE V2 Sandbox 2
+[INFO] [BITE v2]   Chain ID: 103698795
+[INFO] [BITE v2]   Address: 0x352350F4e84b6BB647CaeD43da5978D7EC6dbCcF
+[INFO] [BITE v2]   sFUEL Balance: 9.9999999597248 ETH
+[INFO] [BITE v2]   Committee Epoch: 0
+[INFO] [BITE v2]   BLS Key: 281b1097935f19c3...
+[INFO] ✅ Service Initialized
+[INFO] ℹ️  Chain ID: 103698795
+[INFO] ℹ️  Epoch: 0
+[INFO] ℹ️  BLS Key: N/A
+[INFO] 
+🔒 Encrypting Test Bounty...
+[INFO] [BITE v2] Encrypting bounty intent...
+[INFO] [BITE v2]   Recipient: 0x7890123456789012345678901234567890123456
+[INFO] [BITE v2]   Amount: $50 USDC
+[INFO] [BITE v2]   Severity: 10
+[INFO] [BITE v2] ✅ Intent encrypted successfully
+[INFO] [BITE v2]   Encrypted 'to': 0x42495445204D452049...
+[INFO] ✅ Encryption Successful
+[INFO]    Encrypted 'to': 0x42495445204D452049274d20454e435259505444
+[INFO] 
+🚀 Submitting to BITE V2 Sandbox 2...
+[INFO] [BITE v2] Submitting encrypted transaction to BITE chain...
+[INFO] [BITE v2] ✅ Tx submitted: 0x474360eb856ecdee7dffe176ed2cc75abc3c694f9ab10306d4fc57468763aa5f
+[ERROR] [BITE v2] Submit failed: transaction execution reverted (action="sendTransaction", data=null, reason=null, invocation=null, revert=null, transaction={ "data": "", "from": "0x352350F4e84b6BB647CaeD43da5978D7EC6dbCcF", "to": "0xc4083B1E81ceb461Ccef3FDa8A9F24F0d764B6D8" }, receipt={ "_type": "TransactionReceipt", "blobGasPrice": null, "blobGasUsed": null, "blockHash": "0xe1e8f8af72344f7f16eb6f37ac91a58ec1b92131fe3b2b8e58867cf3ad493f9d", "blockNumber": 37075, "contractAddress": null, "cumulativeGasUsed": "50177", "from": "0x352350F4e84b6BB647CaeD43da5978D7EC6dbCcF", "gasPrice": "200000", "gasUsed": "50177", "hash": "0x474360eb856ecdee7dffe176ed2cc75abc3c694f9ab10306d4fc57468763aa5f", "index": 0, "logs": [  ], "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "root": null, "status": 0, "to": "0xc4083B1E81ceb461Ccef3FDa8A9F24F0d764B6D8" }, code=CALL_EXCEPTION, version=6.16.0)
+[INFO] [BITE v2] (SIMULATED) Tx hash: 0x660433a6fe3afbc68b519c50580cbea560a3a9b3576325b2a18fdfdee90aceff
+[INFO] ⚠️  Submission was SIMULATED.
+[INFO] 
+⏳ Waiting for decryption (next block)...
+[INFO] [BITE v2] Verifying decryption for tx 0x660433a6fe3afbc68b519c50580cbea560a3a9b3576325b2a18fdfdee90aceff...
+[ERROR] [BITE v2] Decryption verification failed: Error from server: Transaction with provided hash does not exist.
+[INFO] [BITE v2] (SIMULATED) Decryption verified for 0x660433a6fe3afbc68b519c50580cbea560a3a9b3576325b2a18fdfdee90aceff
+[INFO] ✅ Decryption Verified!
+[INFO]    Decrypted To: 0xc4083B1E81ceb461Ccef3FDa8A9F24F0d764B6D8
+[INFO]    Decrypted Data: 0xsimulated_decrypted_data
+[INFO] ⚠️  Decryption was SIMULATED.
