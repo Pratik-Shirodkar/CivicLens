@@ -1,0 +1,39 @@
+name: civiclens-backend
+region: nyc
+services:
+  - name: backend
+    github:
+      repo: Pratik-Shirodkar/CivicLens
+      branch: main
+      deploy_on_push: true
+    source_dir: /backend
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    http_port: 3001
+    run_command: npm start
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3001"
+      - key: CRONOS_RPC_URL
+        value: "https://evm-t3.cronos.org"
+      - key: CDP_API_KEY_NAME
+        value: "organizations/a045b741-813a-4b30-8a9d-736f67fd3280/apiKeys/de40dd8b-0174-4634-9671-ca194b2c9a0e"
+      - key: CDP_API_KEY_PRIVATE_KEY
+        type: SECRET
+        value: "-----BEGIN EC PRIVATE KEY-----\nMHcCAQEEIOhU5CsKQxDL6g8HK1omrsvhPtpoBPc7KUxLrEMRQnL5oAoGCCqGSM49\nAwEHoUQDQgAEfO2QvkdyBdjKDlty0JdD5V9BekahXTSt1NRSzZl6qc3/dkgSJFvf\n1HPxynO6Ps0od+xAmewUC3BNT11i13fuAQ==\n-----END EC PRIVATE KEY-----\n"
+      - key: BITE_RPC_URL
+        value: "https://base-sepolia-testnet.skalenodes.com/v1/bite-v2-sandbox-2"
+      - key: BITE_PRIVATE_KEY
+        type: SECRET
+        value: "c7f18b0e8d4aa026847fb190db899fc4c9b8074d2ee49222c7622bf3ebcb04fe"
+      - key: PAYMENT_TOKEN_ADDRESS
+        value: "0x0000000000000000000000000000000000000000"
+      - key: PAYMENT_TOKEN_NAME
+        value: "sFUEL"
+      - key: NETWORK_CHAIN_ID
+        value: "103698795"
+      - key: CONTRACT_ADDRESS
+        value: "0x45b9d2d2242BB81e7Bb95BD0E90A57c468914F4aD"
