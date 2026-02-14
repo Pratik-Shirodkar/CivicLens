@@ -37,3 +37,10 @@ services:
         value: "103698795"
       - key: CONTRACT_ADDRESS
         value: "0x45b9d2d2242BB81e7Bb95BD0E90A57c468914F4aD"
+      - key: AWS_ACCESS_KEY_ID
+        value: "AKIAS3AK6BIGQDSFBDGY"
+      - key: AWS_SECRET_ACCESS_KEY
+        type: SECRET
+        value: "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"
+      - key: AWS_REGION
+        value: "us-east-1"
