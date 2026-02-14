@@ -11,7 +11,30 @@
 const { Hono } = require("hono");
 const { serve } = require("@hono/node-server");
 const { cors } = require("hono/cors");
+const { BedrockRuntimeClient, InvokeModelCommand } = require("@aws-sdk/client-bedrock-runtime");
 require("dotenv/config");
+
+// ============================================
+// Bedrock Client
+// ============================================
+let bedrockClient = null;
+try {
+    const keyId = process.env.AWS_ACCESS_KEY_ID;
+    if (keyId && keyId !== 'your_aws_key') {
+        bedrockClient = new BedrockRuntimeClient({
+            region: process.env.AWS_REGION || 'us-east-1',
+            credentials: {
+                accessKeyId: keyId,
+                secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            },
+        });
+        console.log('[x402 Oracle] ✅ AWS Bedrock client initialized');
+    } else {
+        console.log('[x402 Oracle] ⚠️  No AWS credentials — AI verification will use mock mode');
+    }
+} catch (e) {
+    console.warn('[x402 Oracle] Failed to init Bedrock:', e.message);
+}
 
 // ============================================
 // x402 Oracle Server — Paid AI Services
@@ -159,12 +182,86 @@ function x402PaymentGate(serviceName) {
 app.post("/x402/verify", x402PaymentGate("verify"), async (c) => {
     const payment = c.get("x402Payment");
     const body = await c.req.json().catch(() => ({}));
-    const { description } = body;
+    const { description, imageBase64 } = body;
 
-    const severity = Math.floor(Math.random() * 5) + 5;
-    const categories = ["pothole", "graffiti", "broken_light", "flooding", "structural"];
-    const category = categories[Math.floor(Math.random() * categories.length)];
-    const confidence = (0.75 + Math.random() * 0.2).toFixed(2);
+    let severity, category, confidence, analysis, isVerified;
+
+    // ── Try real Bedrock AI verification ──
+    if (bedrockClient) {
+        try {
+            console.log('[x402 Oracle] 🧠 Calling Bedrock Claude 3 Haiku for verification...');
+
+            const systemPrompt = `You are a civic infrastructure verification AI for CivicLens. Analyze the reported civic issue and respond ONLY with valid JSON (no markdown, no code fences). Use this exact schema:
+{"isVerified": boolean, "severity": number 1-10, "category": "pothole|graffiti|broken_light|flooding|structural|debris|vegetation|other", "confidence": number 0.0-1.0, "analysis": "2-3 sentence assessment"}
+Severity guide: 1-3=cosmetic, 4-6=functional issue, 7-8=safety concern, 9-10=immediate danger.`;
+
+            // Build message content — text + optional image
+            const content = [];
+            if (imageBase64) {
+                // Detect media type from data URI or default to jpeg
+                let mediaType = 'image/jpeg';
+                let rawBase64 = imageBase64;
+                if (imageBase64.startsWith('data:')) {
+                    const match = imageBase64.match(/^data:(image\/\w+);base64,(.*)$/);
+                    if (match) {
+                        mediaType = match[1];
+                        rawBase64 = match[2];
+                    }
+                }
+                content.push({
+                    type: 'image',
+                    source: { type: 'base64', media_type: mediaType, data: rawBase64 },
+                });
+            }
+            content.push({
+                type: 'text',
+                text: `Civic issue report: "${description || 'No description provided'}". Analyze this report${imageBase64 ? ' and the attached image' : ''} and provide your verification assessment as JSON.`,
+            });
+
+            const command = new InvokeModelCommand({
+                modelId: 'anthropic.claude-3-haiku-20240307-v1:0',
+                contentType: 'application/json',
+                accept: 'application/json',
+                body: JSON.stringify({
+                    anthropic_version: 'bedrock-2023-05-31',
+                    max_tokens: 512,
+                    system: systemPrompt,
+                    messages: [{ role: 'user', content }],
+                }),
+            });
+
+            const response = await bedrockClient.send(command);
+            const responseBody = JSON.parse(new TextDecoder().decode(response.body));
+            const aiText = responseBody.content?.[0]?.text || '';
+            console.log('[x402 Oracle] 🧠 Bedrock raw response:', aiText);
+
+            // Parse the AI JSON response
+            const aiResult = JSON.parse(aiText);
+            severity = Math.min(10, Math.max(1, aiResult.severity || 5));
+            category = aiResult.category || 'other';
+            confidence = parseFloat(aiResult.confidence) || 0.85;
+            analysis = aiResult.analysis || 'AI analysis complete.';
+            isVerified = aiResult.isVerified !== false;
+            console.log(`[x402 Oracle] ✅ Bedrock result — severity=${severity}, category=${category}, confidence=${confidence}`);
+        } catch (bedrockErr) {
+            console.error('[x402 Oracle] ❌ Bedrock call failed, falling back to mock:', bedrockErr.message);
+            // Fall through to mock mode below
+            severity = null;
+        }
+    }
+
+    // ── Fallback: mock mode ──
+    if (severity == null) {
+        severity = Math.floor(Math.random() * 5) + 5;
+        const categories = ["pothole", "graffiti", "broken_light", "flooding", "structural"];
+        category = categories[Math.floor(Math.random() * categories.length)];
+        confidence = (0.75 + Math.random() * 0.2).toFixed(2);
+        isVerified = severity >= 5;
+        analysis = `AI analysis complete. Detected ${category} with severity ${severity}/10. ` +
+            `Confidence: ${confidence}. ` +
+            `Recommended action: ${severity >= 7 ? "URGENT dispatch" : "Scheduled maintenance"}.`;
+        console.log('[x402 Oracle] ⚠️  Using MOCK verification (no Bedrock)');
+    }
 
     return c.json({
         service: "CivicLens AI Verification",
@@ -175,14 +272,12 @@ app.post("/x402/verify", x402PaymentGate("verify"), async (c) => {
             txProof: payment.paymentHash,
         },
         result: {
-            isVerified: severity >= 5,
+            isVerified,
             severity,
             category,
             confidence,
             description: description || "Infrastructure issue detected",
-            analysis: `AI analysis complete. Detected ${category} with severity ${severity}/10. ` +
-                `Confidence: ${confidence}. ` +
-                `Recommended action: ${severity >= 7 ? "URGENT dispatch" : "Scheduled maintenance"}.`,
+            analysis,
         },
         attestation: {
             oracle: "CivicLens Verification Oracle v2",

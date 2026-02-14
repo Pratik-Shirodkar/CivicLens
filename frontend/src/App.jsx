@@ -252,6 +252,7 @@ export default function App() {
     const [reports, setReports] = useState([]);
     const [stats, setStats] = useState(null);
     const [capturedImage, setCapturedImage] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
     const [description, setDescription] = useState('');
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [analyzeStep, setAnalyzeStep] = useState(0);
@@ -261,6 +262,25 @@ export default function App() {
     const [showConfetti, setShowConfetti] = useState(false);
     const [successBounty, setSuccessBounty] = useState(null);
     const [showTerminal, setShowTerminal] = useState(false);
+
+    // Refs for hidden file inputs
+    const cameraInputRef = useRef(null);
+    const fileInputRef = useRef(null);
+
+    // Handle file selection from camera or file picker
+    const handleImageSelected = (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setImageFile(file);
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            setCapturedImage(ev.target.result);
+            setView('verify');
+        };
+        reader.readAsDataURL(file);
+        // Reset the input so the same file can be re-selected
+        e.target.value = '';
+    };
 
     // ---- Wallet ----
     const connectWallet = async () => {
@@ -305,10 +325,18 @@ export default function App() {
                 await new Promise(r => setTimeout(r, 800));
                 setAnalyzeStep(s);
             }
+
+            // Build FormData to send the real image via multipart/form-data
+            const formData = new FormData();
+            formData.append('description', description);
+            formData.append('reporterAddress', wallet || '0x0000000000000000000000000000000000000000');
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
             const res = await fetch(`${API_URL}/api/verify-report`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ description, reporterAddress: wallet || '0x0000000000000000000000000000000000000000' })
+                body: formData, // No Content-Type header — browser sets multipart boundary automatically
             });
             const data = await res.json();
             setAiResult(data);
@@ -346,6 +374,7 @@ export default function App() {
         setSuccessBounty(null);
         setView('feed');
         setCapturedImage(null);
+        setImageFile(null);
         setAiResult(null);
         setDescription('');
         setAnalyzeStep(0);
@@ -630,6 +659,23 @@ export default function App() {
                 {/* ====== REPORT VIEW ====== */}
                 {view === 'report' && !capturedImage && (
                     <div className="max-w-lg mx-auto text-center py-12 space-y-6 animate-fade-in-up">
+                        {/* Hidden file inputs */}
+                        <input
+                            type="file"
+                            accept="image/*"
+                            capture="environment"
+                            ref={cameraInputRef}
+                            onChange={handleImageSelected}
+                            className="hidden"
+                        />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            ref={fileInputRef}
+                            onChange={handleImageSelected}
+                            className="hidden"
+                        />
+
                         <div className="inline-flex items-center justify-center w-24 h-24 bg-emerald-500/10 rounded-full">
                             <Camera className="w-10 h-10 text-emerald-400" />
                         </div>
@@ -639,23 +685,18 @@ export default function App() {
                         </div>
                         <div className="flex flex-col gap-3">
                             <button className="w-full py-4 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] shadow-lg shadow-green-900/30"
-                                onClick={() => {
-                                    setCapturedImage('https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600&h=400&fit=crop');
-                                    setView('verify');
-                                }}>
+                                onClick={() => cameraInputRef.current?.click()}>
                                 <Camera className="w-5 h-5" /> Take Photo
                             </button>
                             <button className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all border border-slate-700"
-                                onClick={() => {
-                                    setCapturedImage('https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600&h=400&fit=crop');
-                                    setView('verify');
-                                }}>
+                                onClick={() => fileInputRef.current?.click()}>
                                 <Upload className="w-5 h-5" /> Upload Image
                             </button>
                         </div>
                         <button
                             onClick={() => {
                                 setCapturedImage('https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600&h=400&fit=crop');
+                                setImageFile(null);
                                 setView('verify');
                                 setError(null);
                                 setAiResult(null);
@@ -793,7 +834,7 @@ export default function App() {
                         <Shield className="w-5 h-5" />
                         <span className="text-[10px] font-medium">Feed</span>
                     </button>
-                    <button onClick={() => { setView('report'); setCapturedImage(null); setAiResult(null); setDescription(''); setAnalyzeStep(0); }}
+                    <button onClick={() => { setView('report'); setCapturedImage(null); setImageFile(null); setAiResult(null); setDescription(''); setAnalyzeStep(0); }}
                         className="relative -top-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white p-4 rounded-full shadow-lg shadow-green-900/50 transition-transform hover:scale-110 active:scale-95">
                         <Camera className="w-6 h-6" />
                     </button>
